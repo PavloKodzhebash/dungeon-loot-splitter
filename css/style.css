@@ -1,83 +1,89 @@
-body{
-font-family: Arial;
-margin:0;
-padding:20px;
-background:#f4f4f4;
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-header{
-text-align:center;
-margin-bottom:20px;
+body {
+    margin: 0;
+    padding: 0;
 }
 
-.panel{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:5px;
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
 }
 
-label{
-display:block;
-margin-top:10px;
+main {
+    padding: 1rem;
 }
 
-input{
-width:100%;
-padding:8px;
-margin-top:5px;
+.panel {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
-button{
-margin-top:15px;
-padding:10px;
-cursor:pointer;
+input, button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem;
 }
 
-.hidden{
-display:none;
+button {
+    cursor: pointer;
 }
 
-#lootRows{
-display:contents;
+.error {
+    color: red;
+    font-size: 0.9rem;
 }
 
-.loot-table{
-display:grid;
-grid-template-columns:3fr 1fr 1fr 1fr;
-gap:0.5rem;
-align-items:center;
+.hidden {
+    display: none;
 }
 
-.loot-header{
-font-weight:600;
-border-bottom:2px solid #ccc;
-padding-bottom:0.25rem;
+/* Loot List */
+.loot-table {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
 }
 
-.loot-row{
-display:contents;
+.loot-header {
+    font-weight: 600;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.25rem;
 }
 
-.loot-cell{
-padding:0.25rem 0;
+#lootRows {
+    display: contents;
 }
 
-.loot-cell button{
-width:100%;
+.loot-row {
+    display: contents;
 }
 
-.total-row{
-margin-top:10px;
-font-weight:bold;
+.loot-cell {
+    padding: 0.25rem 0;
 }
 
-@media(min-width:768px){
-
-main{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+.loot-cell button {
+    width: 100%;
 }
 
+/* Responsive */
+@media (min-width: 768px) {
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .reflection {
+        grid-column: span 2;
+    }
 }
