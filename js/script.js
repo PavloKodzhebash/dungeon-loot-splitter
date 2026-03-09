@@ -1,7 +1,6 @@
 // --- State ---
 let loot = [];
 let partySizeInput = document.getElementById("partySize");
-let partySize = Number(partySizeInput.value);
 
 let lootRows = document.getElementById("lootRows");
 let totalLootSpan = document.getElementById("totalLoot");
@@ -46,9 +45,10 @@ function addLoot() {
 
     loot.push({name: name, value: value, quantity: qty});
 
+    // Сбрасываем поля после добавления
     lootNameInput.value = "";
     lootValueInput.value = "";
-    lootQtyInput.value = 1;
+    lootQtyInput.value = "1"; // исправлено
 
     updateUI();
 }
@@ -60,7 +60,7 @@ function removeLoot(index) {
 
 function updateUI() {
     // --- Party Size ---
-    partySize = parseInt(partySizeInput.value);
+    let partySize = parseInt(partySizeInput.value);
     if (isNaN(partySize) || partySize < 1) {
         partyError.innerText = "Party size must be 1 or greater.";
         partyError.classList.remove("hidden");
@@ -80,21 +80,21 @@ function updateUI() {
     for (let i = 0; i < loot.length; i++) {
         let row = document.createElement("div");
         row.className = "loot-row";
+        row.style.display = "grid";
+        row.style.gridTemplateColumns = "3fr 1fr 1fr 1fr";
+        row.style.gap = "0.5rem";
+        row.style.alignItems = "center";
 
         let nameCell = document.createElement("div");
-        nameCell.className = "loot-cell";
         nameCell.innerText = loot[i].name;
 
         let valueCell = document.createElement("div");
-        valueCell.className = "loot-cell";
         valueCell.innerText = loot[i].value.toFixed(2);
 
         let qtyCell = document.createElement("div");
-        qtyCell.className = "loot-cell";
         qtyCell.innerText = loot[i].quantity;
 
         let actionCell = document.createElement("div");
-        actionCell.className = "loot-cell";
         let removeBtn = document.createElement("button");
         removeBtn.innerText = "Remove";
         removeBtn.addEventListener("click", function() {
@@ -134,5 +134,5 @@ document.getElementById("addLootBtn").addEventListener("click", addLoot);
 document.getElementById("splitBtn").addEventListener("click", updateUI);
 partySizeInput.addEventListener("input", updateUI);
 
-// Initial UI render
+// Initial render
 updateUI();
