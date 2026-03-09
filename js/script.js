@@ -48,26 +48,19 @@ function addLoot() {
     // Сбрасываем поля после добавления
     lootNameInput.value = "";
     lootValueInput.value = "";
-    lootQtyInput.value = "1"; // исправлено
+    lootQtyInput.value = "1";
 
-    updateUI();
+    renderLootList();
+    updateSplitButtonState();
 }
 
 function removeLoot(index) {
     loot.splice(index, 1);
-    updateUI();
+    renderLootList();
+    updateSplitButtonState();
 }
 
-function updateUI() {
-    // --- Party Size ---
-    let partySize = parseInt(partySizeInput.value);
-    if (isNaN(partySize) || partySize < 1) {
-        partyError.innerText = "Party size must be 1 or greater.";
-        partyError.classList.remove("hidden");
-    } else {
-        partyError.classList.add("hidden");
-    }
-
+function renderLootList() {
     // --- Render Loot ---
     lootRows.innerHTML = "";
 
@@ -110,29 +103,54 @@ function updateUI() {
         lootRows.appendChild(row);
     }
 
-    // --- Calculate Totals ---
+    // --- Calculate Total Loot ---
     let total = 0;
     for (let i = 0; i < loot.length; i++) {
         total += loot[i].value * loot[i].quantity;
     }
     totalLootSpan.innerText = total.toFixed(2);
 
-    // --- Split Loot ---
+    // Скрываем раздел Split Loot, пока не нажата кнопка
+    splitResults.classList.add("hidden");
+}
+
+function updateSplitButtonState() {
+    let partySize = parseInt(partySizeInput.value);
     if (loot.length === 0 || isNaN(partySize) || partySize < 1) {
-        splitResults.classList.add("hidden");
         splitBtn.disabled = true;
     } else {
-        splitResults.classList.remove("hidden");
         splitBtn.disabled = false;
-        splitTotalSpan.innerText = total.toFixed(2);
-        lootPerMemberSpan.innerText = (total / partySize).toFixed(2);
     }
+}
+
+function calculateSplit() {
+    let partySize = parseInt(partySizeInput.value);
+    if (isNaN(partySize) || partySize < 1) {
+        partyError.innerText = "Party size must be 1 or greater.";
+        partyError.classList.remove("hidden");
+        splitResults.classList.add("hidden");
+        return;
+    } else {
+        partyError.classList.add("hidden");
+    }
+
+    // --- Calculate Total Loot ---
+    let total = 0;
+    for (let i = 0; i < loot.length; i++) {
+        total += loot[i].value * loot[i].quantity;
+    }
+
+    splitTotalSpan.innerText = total.toFixed(2);
+    lootPerMemberSpan.innerText = (total / partySize).toFixed(2);
+
+    splitResults.classList.remove("hidden");
 }
 
 // --- Event Listeners ---
 document.getElementById("addLootBtn").addEventListener("click", addLoot);
-document.getElementById("splitBtn").addEventListener("click", updateUI);
-partySizeInput.addEventListener("input", updateUI);
+document.getElementById("splitBtn").addEventListener("click", calculateSplit);
+partySizeInput.addEventListener("input", updateSplitButtonState);
 
 // Initial render
-updateUI();
+renderLootList();
+updateSplitButtonState();
