@@ -1,42 +1,101 @@
 body{
-font-family: Arial;
+font-family: Arial, Helvetica, sans-serif;
 margin:0;
 padding:20px;
-background:#f4f4f4;
+background:linear-gradient(135deg,#f4f6f9,#e9eef5);
+color:#333;
 }
+
+/* header */
 
 header{
 text-align:center;
-margin-bottom:20px;
+margin-bottom:30px;
 }
+
+h1{
+font-size:32px;
+letter-spacing:1px;
+}
+
+/* panels */
 
 .panel{
 background:white;
 padding:20px;
 margin-bottom:20px;
-border-radius:5px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+transition:transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.panel:hover{
+transform:translateY(-3px);
+box-shadow:0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* inputs */
 
 label{
 display:block;
-margin-top:10px;
+margin-top:12px;
+font-weight:600;
 }
 
 input{
 width:100%;
-padding:8px;
-margin-top:5px;
+padding:10px;
+margin-top:6px;
+border-radius:6px;
+border:1px solid #ccc;
+transition:border 0.2s ease;
 }
+
+input:focus{
+outline:none;
+border:1px solid #4CAF50;
+}
+
+/* buttons */
 
 button{
 margin-top:15px;
-padding:10px;
+padding:10px 14px;
+border:none;
+border-radius:6px;
+background:#4CAF50;
+color:white;
+font-weight:600;
 cursor:pointer;
+transition:background 0.2s ease, transform 0.1s ease;
 }
 
-.hidden{
-display:none;
+button:hover{
+background:#43a047;
 }
+
+button:active{
+transform:scale(0.97);
+}
+
+/* reset button */
+
+#resetBtn{
+background:#e53935;
+}
+
+#resetBtn:hover{
+background:#d32f2f;
+}
+
+/* split button */
+
+#splitBtn:disabled{
+background:#aaa;
+cursor:not-allowed;
+}
+
+/* loot table */
 
 #lootRows{
 display:contents;
@@ -45,14 +104,15 @@ display:contents;
 .loot-table{
 display:grid;
 grid-template-columns:3fr 1fr 1fr 1fr;
-gap:0.5rem;
+gap:8px;
 align-items:center;
+margin-top:10px;
 }
 
 .loot-header{
-font-weight:600;
-border-bottom:2px solid #ccc;
-padding-bottom:0.25rem;
+font-weight:700;
+border-bottom:2px solid #ddd;
+padding-bottom:6px;
 }
 
 .loot-row{
@@ -60,17 +120,44 @@ display:contents;
 }
 
 .loot-cell{
-padding:0.25rem 0;
+padding:6px 0;
 }
 
 .loot-cell button{
+background:#ff7043;
 width:100%;
 }
 
-.total-row{
-margin-top:10px;
-font-weight:bold;
+.loot-cell button:hover{
+background:#f4511e;
 }
+
+/* total */
+
+.total-row{
+margin-top:12px;
+font-weight:bold;
+font-size:18px;
+}
+
+/* message */
+
+#noLootMessage{
+margin-top:10px;
+color:#777;
+}
+
+#errorMessage{
+margin-top:10px;
+color:#e53935;
+font-weight:600;
+}
+
+.hidden{
+display:none;
+}
+
+/* responsive */
 
 @media(min-width:768px){
 
@@ -78,6 +165,10 @@ main{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
+}
+
+.panel:nth-child(5){
+grid-column:1 / span 2;
 }
 
 }
