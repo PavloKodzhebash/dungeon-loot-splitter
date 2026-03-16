@@ -1,156 +1,283 @@
-// --- State ---
+// storage key
+const STORAGE_KEY = "lootSplitterState";
+
+// application state
 let loot = [];
+let partySize = 1;
+
+// DOM elements
 let partySizeInput = document.getElementById("partySize");
-
-let lootRows = document.getElementById("lootRows");
-let totalLootSpan = document.getElementById("totalLoot");
-let splitTotalSpan = document.getElementById("splitTotal");
-let lootPerMemberSpan = document.getElementById("lootPerMember");
-let splitResults = document.getElementById("splitResults");
-let splitBtn = document.getElementById("splitBtn");
-
 let lootNameInput = document.getElementById("lootName");
 let lootValueInput = document.getElementById("lootValue");
-let lootQtyInput = document.getElementById("lootQty");
+let lootQuantityInput = document.getElementById("lootQuantity");
 
-let lootError = document.getElementById("lootError");
-let partyError = document.getElementById("partyError");
+let addLootBtn = document.getElementById("addLootBtn");
+let splitBtn = document.getElementById("splitBtn");
+let resetBtn = document.getElementById("resetBtn");
+
+let totalLootSpan = document.getElementById("totalLoot");
+let lootPerMemberSpan = document.getElementById("lootPerMember");
+
+let lootRows = document.getElementById("lootRows");
 let noLootMessage = document.getElementById("noLootMessage");
+let errorMessage = document.getElementById("errorMessage");
 
-// --- Functions ---
-function addLoot() {
-    lootError.classList.add("hidden");
 
-    let name = lootNameInput.value.trim();
-    let value = parseFloat(lootValueInput.value);
-    let qty = parseInt(lootQtyInput.value);
+// event listeners
+addLootBtn.addEventListener("click", addLoot);
+splitBtn.addEventListener("click", splitLoot);
+resetBtn.addEventListener("click", resetAll);
 
-    if (!name) {
-        lootError.innerText = "Loot name cannot be empty.";
-        lootError.classList.remove("hidden");
-        return;
-    }
+partySizeInput.addEventListener("input", function(){
 
-    if (isNaN(value) || value < 0) {
-        lootError.innerText = "Loot value must be 0 or greater.";
-        lootError.classList.remove("hidden");
-        return;
-    }
+let value = parseInt(partySizeInput.value);
 
-    if (isNaN(qty) || qty < 1) {
-        lootError.innerText = "Quantity must be 1 or greater.";
-        lootError.classList.remove("hidden");
-        return;
-    }
+if(value >= 1){
 
-    loot.push({name: name, value: value, quantity: qty});
+partySize = value;
 
-    // Сбрасываем поля после добавления
-    lootNameInput.value = "";
-    lootValueInput.value = "";
-    lootQtyInput.value = "1";
+saveState();
 
-    renderLootList();
-    updateSplitButtonState();
+updateUI();
+
 }
 
-function removeLoot(index) {
-    loot.splice(index, 1);
-    renderLootList();
-    updateSplitButtonState();
+});
+
+
+// save state
+function saveState(){
+
+let state = {
+loot: loot,
+partySize: partySize
+};
+
+localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
 }
 
-function renderLootList() {
-    // --- Render Loot ---
-    lootRows.innerHTML = "";
 
-    if (loot.length === 0) {
-        noLootMessage.classList.remove("hidden");
-    } else {
-        noLootMessage.classList.add("hidden");
-    }
+// restore state
+function restoreState(){
 
-    for (let i = 0; i < loot.length; i++) {
-        let row = document.createElement("div");
-        row.className = "loot-row";
-        row.style.display = "grid";
-        row.style.gridTemplateColumns = "3fr 1fr 1fr 1fr";
-        row.style.gap = "0.5rem";
-        row.style.alignItems = "center";
+let saved = localStorage.getItem(STORAGE_KEY);
 
-        let nameCell = document.createElement("div");
-        nameCell.innerText = loot[i].name;
-
-        let valueCell = document.createElement("div");
-        valueCell.innerText = loot[i].value.toFixed(2);
-
-        let qtyCell = document.createElement("div");
-        qtyCell.innerText = loot[i].quantity;
-
-        let actionCell = document.createElement("div");
-        let removeBtn = document.createElement("button");
-        removeBtn.innerText = "Remove";
-        removeBtn.addEventListener("click", function() {
-            removeLoot(i);
-        });
-        actionCell.appendChild(removeBtn);
-
-        row.appendChild(nameCell);
-        row.appendChild(valueCell);
-        row.appendChild(qtyCell);
-        row.appendChild(actionCell);
-
-        lootRows.appendChild(row);
-    }
-
-    // --- Calculate Total Loot ---
-    let total = 0;
-    for (let i = 0; i < loot.length; i++) {
-        total += loot[i].value * loot[i].quantity;
-    }
-    totalLootSpan.innerText = total.toFixed(2);
-
-    // Скрываем раздел Split Loot, пока не нажата кнопка
-    splitResults.classList.add("hidden");
+if(!saved){
+return;
 }
 
-function updateSplitButtonState() {
-    let partySize = parseInt(partySizeInput.value);
-    if (loot.length === 0 || isNaN(partySize) || partySize < 1) {
-        splitBtn.disabled = true;
-    } else {
-        splitBtn.disabled = false;
-    }
+try{
+
+let parsed = JSON.parse(saved);
+
+if(typeof parsed !== "object"){
+return;
 }
 
-function calculateSplit() {
-    let partySize = parseInt(partySizeInput.value);
-    if (isNaN(partySize) || partySize < 1) {
-        partyError.innerText = "Party size must be 1 or greater.";
-        partyError.classList.remove("hidden");
-        splitResults.classList.add("hidden");
-        return;
-    } else {
-        partyError.classList.add("hidden");
-    }
+if(Array.isArray(parsed.loot)){
 
-    // --- Calculate Total Loot ---
-    let total = 0;
-    for (let i = 0; i < loot.length; i++) {
-        total += loot[i].value * loot[i].quantity;
-    }
+for(let i=0;i<parsed.loot.length;i++){
 
-    splitTotalSpan.innerText = total.toFixed(2);
-    lootPerMemberSpan.innerText = (total / partySize).toFixed(2);
+let item = parsed.loot[i];
 
-    splitResults.classList.remove("hidden");
+if(
+item.name &&
+item.name.trim() !== "" &&
+typeof item.value === "number" &&
+item.value >= 0 &&
+typeof item.quantity === "number" &&
+item.quantity >= 1
+){
+
+loot.push(item);
+
 }
 
-// --- Event Listeners ---
-document.getElementById("addLootBtn").addEventListener("click", addLoot);
-document.getElementById("splitBtn").addEventListener("click", calculateSplit);
-partySizeInput.addEventListener("input", updateSplitButtonState);
+}
 
-// Initial render
-renderLootList();
-updateSplitButtonState();
+}
+
+if(typeof parsed.partySize === "number" && parsed.partySize >= 1){
+
+partySize = parsed.partySize;
+partySizeInput.value = partySize;
+
+}
+
+}catch(error){
+
+console.log("Restore failed");
+
+}
+
+}
+
+
+// add loot
+function addLoot(){
+
+let name = lootNameInput.value.trim();
+let value = parseFloat(lootValueInput.value);
+let quantity = parseInt(lootQuantityInput.value);
+
+errorMessage.innerText = "";
+
+if(name === ""){
+errorMessage.innerText = "Item name required";
+return;
+}
+
+if(isNaN(value) || value < 0){
+errorMessage.innerText = "Invalid value";
+return;
+}
+
+if(isNaN(quantity) || quantity < 1){
+errorMessage.innerText = "Invalid quantity";
+return;
+}
+
+let item = {
+name: name,
+value: value,
+quantity: quantity
+};
+
+loot.push(item);
+
+saveState();
+
+lootNameInput.value = "";
+lootValueInput.value = "";
+lootQuantityInput.value = 1;
+
+updateUI();
+
+}
+
+
+// remove loot
+function removeLoot(index){
+
+loot.splice(index,1);
+
+saveState();
+
+updateUI();
+
+}
+
+
+// split loot
+function splitLoot(){
+
+let total = 0;
+
+for(let i=0;i<loot.length;i++){
+
+total += loot[i].value * loot[i].quantity;
+
+}
+
+let split = total / partySize;
+
+lootPerMemberSpan.innerText = split.toFixed(2);
+
+}
+
+
+// update interface
+function updateUI(){
+
+let total = 0;
+
+for(let i=0;i<loot.length;i++){
+
+total += loot[i].value * loot[i].quantity;
+
+}
+
+totalLootSpan.innerText = total.toFixed(2);
+
+lootRows.innerHTML = "";
+
+for(let i=0;i<loot.length;i++){
+
+let row = document.createElement("div");
+row.className = "loot-row";
+
+let nameCell = document.createElement("div");
+nameCell.className = "loot-cell";
+nameCell.innerText = loot[i].name;
+
+let valueCell = document.createElement("div");
+valueCell.className = "loot-cell";
+valueCell.innerText = loot[i].value.toFixed(2);
+
+let quantityCell = document.createElement("div");
+quantityCell.className = "loot-cell";
+quantityCell.innerText = loot[i].quantity;
+
+let actionCell = document.createElement("div");
+actionCell.className = "loot-cell";
+
+let removeBtn = document.createElement("button");
+removeBtn.innerText = "Remove";
+
+removeBtn.addEventListener("click", function(){
+removeLoot(i);
+});
+
+actionCell.appendChild(removeBtn);
+
+row.appendChild(nameCell);
+row.appendChild(valueCell);
+row.appendChild(quantityCell);
+row.appendChild(actionCell);
+
+lootRows.appendChild(row);
+
+}
+
+if(loot.length === 0){
+noLootMessage.classList.remove("hidden");
+}else{
+noLootMessage.classList.add("hidden");
+}
+
+if(loot.length === 0 || partySize < 1){
+splitBtn.disabled = true;
+}else{
+splitBtn.disabled = false;
+}
+
+}
+
+
+// reset
+function resetAll(){
+
+loot = [];
+
+partySize = 1;
+
+partySizeInput.value = 1;
+
+localStorage.removeItem(STORAGE_KEY);
+
+lootPerMemberSpan.innerText = "0.00";
+
+updateUI();
+
+}
+
+
+// initialize
+document.addEventListener("DOMContentLoaded", function(){
+
+restoreState();
+
+updateUI();
+
+});
