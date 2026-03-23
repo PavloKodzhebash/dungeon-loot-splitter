@@ -1,167 +1,182 @@
-body{
-font-family: Arial, Helvetica, sans-serif;
-margin:0;
-padding:20px;
-background:linear-gradient(135deg,#f4f6f9,#e9eef5);
-color:#333;
+/* ===== Global Styles ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    color: #333;
 }
 
-/* header */
-header{
-text-align:center;
-margin-bottom:30px;
+header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-h1{
-font-size:32px;
-letter-spacing:1px;
+h1 {
+    font-size: 36px;
+    letter-spacing: 1px;
+    color: #1f2937;
 }
 
-/* panels */
-.panel{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-transition:transform 0.2s ease, box-shadow 0.2s ease;
+/* ===== Panels ===== */
+.panel {
+    background: #fff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.panel:hover{
-transform:translateY(-3px);
-box-shadow:0 6px 16px rgba(0,0,0,0.12);
+.panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
 }
 
-/* inputs */
-label{
-display:block;
-margin-top:12px;
-font-weight:600;
+h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #111827;
 }
 
-input{
-width:100%;
-padding:10px;
-margin-top:6px;
-border-radius:6px;
-border:1px solid #ccc;
-transition:border 0.2s ease;
+/* ===== Inputs ===== */
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    color: #111827;
 }
 
-input:focus{
-outline:none;
-border:1px solid #4CAF50;
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* buttons */
-button{
-margin-top:15px;
-padding:10px 14px;
-border:none;
-border-radius:6px;
-background:#4CAF50;
-color:white;
-font-weight:600;
-cursor:pointer;
-transition:background 0.2s ease, transform 0.1s ease;
+input:focus {
+    outline: none;
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
 }
 
-button:hover{
-background:#43a047;
+/* ===== Buttons ===== */
+button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
-button:active{
-transform:scale(0.97);
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
 }
 
-/* reset button */
-#resetBtn{
-background:#e53935;
+/* Primary Buttons */
+#addLootBtn, #splitBtn, #syncBtn, #loadBtn {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: #fff;
 }
 
-#resetBtn:hover{
-background:#d32f2f;
+#addLootBtn:hover, #splitBtn:hover, #syncBtn:hover, #loadBtn:hover {
+    background: linear-gradient(135deg, #66BB6A, #388E3C);
 }
 
-/* split button */
-#splitBtn:disabled{
-background:#aaa;
-cursor:not-allowed;
+/* Reset Button */
+#resetBtn {
+    background: linear-gradient(135deg, #EF5350, #C62828);
+    color: #fff;
 }
 
-/* loot table */
-#lootRows{
-display:contents;
+#resetBtn:hover {
+    background: linear-gradient(135deg, #F0625D, #B71C1C);
 }
 
-.loot-table{
-display:grid;
-grid-template-columns:3fr 1fr 1fr 1fr;
-gap:8px;
-align-items:center;
-margin-top:10px;
+/* Disabled Button */
+#splitBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
-.loot-header{
-font-weight:700;
-border-bottom:2px solid #ddd;
-padding-bottom:6px;
+/* ===== Loot Table ===== */
+#lootRows {
+    display: contents;
 }
 
-.loot-row{
-display:contents;
+.loot-table {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
 
-.loot-cell{
-padding:6px 0;
+.loot-header {
+    font-weight: 700;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 6px;
+    color: #111827;
 }
 
-.loot-cell button{
-background:#ff7043;
-width:100%;
+.loot-row {
+    display: contents;
 }
 
-.loot-cell button:hover{
-background:#f4511e;
+.loot-cell {
+    padding: 8px 0;
 }
 
-/* total */
-.total-row{
-margin-top:12px;
-font-weight:bold;
-font-size:18px;
+.loot-cell button {
+    background: linear-gradient(135deg, #FF7043, #D84315);
+    width: 100%;
+    border-radius: 6px;
+    color: #fff;
 }
 
-/* message */
-#noLootMessage{
-margin-top:10px;
-color:#777;
+.loot-cell button:hover {
+    background: linear-gradient(135deg, #FF8A65, #BF360C);
 }
 
-#errorMessage{
-margin-top:10px;
-color:#e53935;
-font-weight:600;
+/* ===== Totals ===== */
+.total-row {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
 }
 
-#serverMessage{
-margin-top:10px;
-color:#1565c0;
-font-weight:600;
+/* ===== Messages ===== */
+#noLootMessage, #errorMessage, #serverMessage {
+    margin-top: 10px;
+    font-weight: 600;
 }
 
-.hidden{
-display:none;
+#errorMessage {
+    color: #EF5350;
 }
 
-/* responsive */
+#serverMessage {
+    color: #1E3A8A;
+}
+
+/* ===== Hidden ===== */
+.hidden {
+    display: none;
+}
+
+/* ===== Responsive ===== */
 @media(min-width:768px){
-main{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-.panel:nth-child(5){
-grid-column:1 / span 2;
-}
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .panel:nth-child(5){
+        grid-column: 1 / span 2;
+    }
 }
