@@ -1,88 +1,95 @@
 body{
-font-family: Arial, sans-serif;
+font-family: Arial, Helvetica, sans-serif;
 margin:0;
-padding:30px;
-background:#121212;
-color:#e5e5e5;
+padding:20px;
+background:linear-gradient(135deg,#f4f6f9,#e9eef5);
+color:#333;
 }
 
 /* header */
-
 header{
 text-align:center;
 margin-bottom:30px;
 }
 
 h1{
-font-size:36px;
-color:#facc15;
-letter-spacing:2px;
+font-size:32px;
+letter-spacing:1px;
 }
 
 /* panels */
-
 .panel{
-background:#1e1e1e;
-padding:25px;
+background:white;
+padding:20px;
 margin-bottom:20px;
-border-radius:12px;
-border:1px solid #333;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.panel:hover{
+transform:translateY(-3px);
+box-shadow:0 6px 16px rgba(0,0,0,0.12);
 }
 
 /* inputs */
-
 label{
 display:block;
 margin-top:12px;
-font-weight:bold;
+font-weight:600;
 }
 
 input{
 width:100%;
 padding:10px;
-margin-top:5px;
+margin-top:6px;
 border-radius:6px;
-border:1px solid #444;
-background:#2a2a2a;
-color:white;
+border:1px solid #ccc;
+transition:border 0.2s ease;
+}
+
+input:focus{
+outline:none;
+border:1px solid #4CAF50;
 }
 
 /* buttons */
-
 button{
 margin-top:15px;
-padding:10px;
+padding:10px 14px;
 border:none;
 border-radius:6px;
-background:#3b82f6;
+background:#4CAF50;
 color:white;
-font-weight:bold;
+font-weight:600;
 cursor:pointer;
+transition:background 0.2s ease, transform 0.1s ease;
 }
 
 button:hover{
-background:#2563eb;
+background:#43a047;
+}
+
+button:active{
+transform:scale(0.97);
 }
 
 /* reset button */
-
 #resetBtn{
-background:#ef4444;
+background:#e53935;
 }
 
 #resetBtn:hover{
-background:#dc2626;
+background:#d32f2f;
 }
 
-/* disabled */
-
-button:disabled{
-background:#555;
+/* split button */
+#splitBtn:disabled{
+background:#aaa;
 cursor:not-allowed;
 }
 
-/* table */
-
+/* loot table */
 #lootRows{
 display:contents;
 }
@@ -90,14 +97,15 @@ display:contents;
 .loot-table{
 display:grid;
 grid-template-columns:3fr 1fr 1fr 1fr;
-gap:10px;
+gap:8px;
+align-items:center;
 margin-top:10px;
 }
 
 .loot-header{
-font-weight:bold;
-border-bottom:2px solid #555;
-padding-bottom:5px;
+font-weight:700;
+border-bottom:2px solid #ddd;
+padding-bottom:6px;
 }
 
 .loot-row{
@@ -105,57 +113,55 @@ display:contents;
 }
 
 .loot-cell{
-padding:5px 0;
+padding:6px 0;
 }
 
-/* remove button */
-
 .loot-cell button{
-background:#f97316;
+background:#ff7043;
+width:100%;
 }
 
 .loot-cell button:hover{
-background:#ea580c;
+background:#f4511e;
 }
 
 /* total */
-
 .total-row{
-margin-top:10px;
-font-size:18px;
+margin-top:12px;
 font-weight:bold;
-color:#22c55e;
+font-size:18px;
 }
 
-/* messages */
-
+/* message */
 #noLootMessage{
-color:#888;
 margin-top:10px;
+color:#777;
 }
 
 #errorMessage{
-color:#f87171;
 margin-top:10px;
-font-weight:bold;
+color:#e53935;
+font-weight:600;
+}
+
+#serverMessage{
+margin-top:10px;
+color:#1565c0;
+font-weight:600;
 }
 
 .hidden{
 display:none;
 }
 
-/* layout */
-
+/* responsive */
 @media(min-width:768px){
-
 main{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
 }
-
 .panel:nth-child(5){
 grid-column:1 / span 2;
 }
-
 }
