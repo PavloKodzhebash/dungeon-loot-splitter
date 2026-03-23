@@ -2,8 +2,8 @@
 const STORAGE_KEY = "lootSplitterState";
 
 // external server
-const SERVER_URL = "http://goldtop.hopto.org"; // сервер Phase 4
-const STUDENT_ID = "yourFirstNameLastInitial"; // <-- поставь свой
+const SERVER_URL = "http://goldtop.hopto.org";
+const STUDENT_ID = "PavloKodzhebash"; 
 
 // application state
 let loot = [];
