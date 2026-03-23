@@ -22,262 +22,196 @@ let lootRows = document.getElementById("lootRows");
 let noLootMessage = document.getElementById("noLootMessage");
 let errorMessage = document.getElementById("errorMessage");
 
+let syncBtn = document.getElementById("syncBtn");
+let loadBtn = document.getElementById("loadBtn");
+let serverMessage = document.getElementById("serverMessage");
 
 // event listeners
 addLootBtn.addEventListener("click", addLoot);
 splitBtn.addEventListener("click", splitLoot);
 resetBtn.addEventListener("click", resetAll);
+syncBtn.addEventListener("click", syncToServer);
+loadBtn.addEventListener("click", loadFromServer);
 
 partySizeInput.addEventListener("input", function(){
-
-let value = parseInt(partySizeInput.value);
-
-if(value >= 1){
-
-partySize = value;
-
-saveState();
-
-updateUI();
-
-}
-
+    let value = parseInt(partySizeInput.value);
+    if(value >= 1){
+        partySize = value;
+        saveState();
+        updateUI();
+    }
 });
-
 
 // save state
 function saveState(){
-
-let state = {
-loot: loot,
-partySize: partySize
-};
-
-localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-
+    let state = { loot: loot, partySize: partySize };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-
 
 // restore state
 function restoreState(){
+    let saved = localStorage.getItem(STORAGE_KEY);
+    if(!saved) return;
+    try{
+        let parsed = JSON.parse(saved);
+        if(typeof parsed !== "object") return;
 
-let saved = localStorage.getItem(STORAGE_KEY);
+        if(Array.isArray(parsed.loot)){
+            for(let item of parsed.loot){
+                if(item.name && item.name.trim() !== "" &&
+                   typeof item.value === "number" && item.value >= 0 &&
+                   typeof item.quantity === "number" && item.quantity >= 1){
+                    loot.push(item);
+                }
+            }
+        }
 
-if(!saved){
-return;
+        if(typeof parsed.partySize === "number" && parsed.partySize >= 1){
+            partySize = parsed.partySize;
+            partySizeInput.value = partySize;
+        }
+    }catch(error){
+        console.log("Restore failed");
+    }
 }
-
-try{
-
-let parsed = JSON.parse(saved);
-
-if(typeof parsed !== "object"){
-return;
-}
-
-if(Array.isArray(parsed.loot)){
-
-for(let i=0;i<parsed.loot.length;i++){
-
-let item = parsed.loot[i];
-
-if(
-item.name &&
-item.name.trim() !== "" &&
-typeof item.value === "number" &&
-item.value >= 0 &&
-typeof item.quantity === "number" &&
-item.quantity >= 1
-){
-
-loot.push(item);
-
-}
-
-}
-
-}
-
-if(typeof parsed.partySize === "number" && parsed.partySize >= 1){
-
-partySize = parsed.partySize;
-partySizeInput.value = partySize;
-
-}
-
-}catch(error){
-
-console.log("Restore failed");
-
-}
-
-}
-
 
 // add loot
 function addLoot(){
+    let name = lootNameInput.value.trim();
+    let value = parseFloat(lootValueInput.value);
+    let quantity = parseInt(lootQuantityInput.value);
+    errorMessage.innerText = "";
 
-let name = lootNameInput.value.trim();
-let value = parseFloat(lootValueInput.value);
-let quantity = parseInt(lootQuantityInput.value);
+    if(name === ""){ errorMessage.innerText = "Item name required"; return; }
+    if(isNaN(value) || value < 0){ errorMessage.innerText = "Invalid value"; return; }
+    if(isNaN(quantity) || quantity < 1){ errorMessage.innerText = "Invalid quantity"; return; }
 
-errorMessage.innerText = "";
+    loot.push({name, value, quantity});
+    saveState();
 
-if(name === ""){
-errorMessage.innerText = "Item name required";
-return;
+    lootNameInput.value = "";
+    lootValueInput.value = "";
+    lootQuantityInput.value = 1;
+
+    updateUI();
 }
-
-if(isNaN(value) || value < 0){
-errorMessage.innerText = "Invalid value";
-return;
-}
-
-if(isNaN(quantity) || quantity < 1){
-errorMessage.innerText = "Invalid quantity";
-return;
-}
-
-let item = {
-name: name,
-value: value,
-quantity: quantity
-};
-
-loot.push(item);
-
-saveState();
-
-lootNameInput.value = "";
-lootValueInput.value = "";
-lootQuantityInput.value = 1;
-
-updateUI();
-
-}
-
 
 // remove loot
 function removeLoot(index){
-
-loot.splice(index,1);
-
-saveState();
-
-updateUI();
-
+    loot.splice(index,1);
+    saveState();
+    updateUI();
 }
-
 
 // split loot
 function splitLoot(){
-
-let total = 0;
-
-for(let i=0;i<loot.length;i++){
-
-total += loot[i].value * loot[i].quantity;
-
+    let total = loot.reduce((sum,item) => sum + item.value * item.quantity, 0);
+    lootPerMemberSpan.innerText = (total / partySize).toFixed(2);
 }
 
-let split = total / partySize;
-
-lootPerMemberSpan.innerText = split.toFixed(2);
-
-}
-
-
-// update interface
+// update UI
 function updateUI(){
+    let total = loot.reduce((sum,item) => sum + item.value * item.quantity, 0);
+    totalLootSpan.innerText = total.toFixed(2);
 
-let total = 0;
+    lootRows.innerHTML = "";
+    loot.forEach((item,i)=>{
+        let row = document.createElement("div");
+        row.className = "loot-row";
 
-for(let i=0;i<loot.length;i++){
+        let nameCell = document.createElement("div");
+        nameCell.className = "loot-cell"; nameCell.innerText = item.name;
 
-total += loot[i].value * loot[i].quantity;
+        let valueCell = document.createElement("div");
+        valueCell.className = "loot-cell"; valueCell.innerText = item.value.toFixed(2);
 
+        let quantityCell = document.createElement("div");
+        quantityCell.className = "loot-cell"; quantityCell.innerText = item.quantity;
+
+        let actionCell = document.createElement("div");
+        actionCell.className = "loot-cell";
+        let removeBtn = document.createElement("button"); removeBtn.innerText = "Remove";
+        removeBtn.addEventListener("click", ()=>removeLoot(i));
+        actionCell.appendChild(removeBtn);
+
+        row.append(nameCell, valueCell, quantityCell, actionCell);
+        lootRows.appendChild(row);
+    });
+
+    noLootMessage.classList.toggle("hidden", loot.length > 0);
+    splitBtn.disabled = loot.length === 0 || partySize < 1;
 }
-
-totalLootSpan.innerText = total.toFixed(2);
-
-lootRows.innerHTML = "";
-
-for(let i=0;i<loot.length;i++){
-
-let row = document.createElement("div");
-row.className = "loot-row";
-
-let nameCell = document.createElement("div");
-nameCell.className = "loot-cell";
-nameCell.innerText = loot[i].name;
-
-let valueCell = document.createElement("div");
-valueCell.className = "loot-cell";
-valueCell.innerText = loot[i].value.toFixed(2);
-
-let quantityCell = document.createElement("div");
-quantityCell.className = "loot-cell";
-quantityCell.innerText = loot[i].quantity;
-
-let actionCell = document.createElement("div");
-actionCell.className = "loot-cell";
-
-let removeBtn = document.createElement("button");
-removeBtn.innerText = "Remove";
-
-removeBtn.addEventListener("click", function(){
-removeLoot(i);
-});
-
-actionCell.appendChild(removeBtn);
-
-row.appendChild(nameCell);
-row.appendChild(valueCell);
-row.appendChild(quantityCell);
-row.appendChild(actionCell);
-
-lootRows.appendChild(row);
-
-}
-
-if(loot.length === 0){
-noLootMessage.classList.remove("hidden");
-}else{
-noLootMessage.classList.add("hidden");
-}
-
-if(loot.length === 0 || partySize < 1){
-splitBtn.disabled = true;
-}else{
-splitBtn.disabled = false;
-}
-
-}
-
 
 // reset
 function resetAll(){
-
-loot = [];
-
-partySize = 1;
-
-partySizeInput.value = 1;
-
-localStorage.removeItem(STORAGE_KEY);
-
-lootPerMemberSpan.innerText = "0.00";
-
-updateUI();
-
+    loot = [];
+    partySize = 1;
+    partySizeInput.value = 1;
+    localStorage.removeItem(STORAGE_KEY);
+    lootPerMemberSpan.innerText = "0.00";
+    updateUI();
 }
 
+// ---- Phase 4: External Sync ----
+function syncToServer(){
+    serverMessage.innerText = "";
+    const payload = { studentId: "pavloH", state: { loot, partySize } };
+
+    fetch(`http://goldtop.hopto.org/save/pavloH`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === "saved") serverMessage.innerText = "Sync successful!";
+        else serverMessage.innerText = "Sync failed: invalid server response";
+    })
+    .catch(err => serverMessage.innerText = "Sync error: " + err);
+}
+
+function loadFromServer(){
+    serverMessage.innerText = "";
+    fetch(`http://goldtop.hopto.org/load/pavloH`)
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === "loaded" && data.studentId === "pavloH"){
+            const newLoot = [];
+            const party = data.state.partySize;
+
+            if(Array.isArray(data.state.loot)){
+                for(const item of data.state.loot){
+                    if(item.name && typeof item.value==="number" && item.value>=0 &&
+                       typeof item.quantity==="number" && item.quantity>=1){
+                        newLoot.push(item);
+                    } else {
+                        serverMessage.innerText="Load failed: invalid loot item"; return;
+                    }
+                }
+            } else { serverMessage.innerText="Load failed: loot missing"; return; }
+
+            if(typeof party!=="number" || party<1){ serverMessage.innerText="Load failed: invalid party size"; return; }
+
+            // Assign validated state
+            loot = newLoot;
+            partySize = party;
+            partySizeInput.value = partySize;
+
+            saveState();
+            updateUI();
+
+            serverMessage.innerText = "Load successful!";
+        } else if(data.status === "empty"){
+            serverMessage.innerText="No server data found";
+        } else {
+            serverMessage.innerText="Invalid server response";
+        }
+    })
+    .catch(err => serverMessage.innerText = "Load error: "+err);
+}
 
 // initialize
 document.addEventListener("DOMContentLoaded", function(){
-
-restoreState();
-
-updateUI();
-
+    restoreState();
+    updateUI();
 });
