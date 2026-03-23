@@ -1,170 +1,152 @@
-/* ===== Global Styles ===== */
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #fff;
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:0;
+    padding:20px;
+    background:linear-gradient(135deg,#a1c4fd,#c2e9fb);
+    color:#333;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
+/* header */
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+h1{
+    font-size:36px;
+    letter-spacing:1px;
+    color:#1a237e;
 }
 
-h1 {
-    font-size: 40px;
-    letter-spacing: 2px;
-    color: #ffdd59;
-    text-shadow: 1px 1px 6px #000;
+/* panels */
+.panel{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.1);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.panel:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.15);
 }
 
-/* ===== Panels ===== */
-.panel {
-    background: linear-gradient(135deg, #2b2d42, #3f3f5c);
-    padding: 25px;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* inputs */
+label{
+    display:block;
+    margin-top:12px;
+    font-weight:600;
+}
+input{
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    transition:border 0.2s ease;
+}
+input:focus{
+    outline:none;
+    border:2px solid #1a237e;
 }
 
-.panel:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.7);
+/* buttons */
+button{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:#1a237e;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s ease, transform 0.1s ease;
+}
+button:hover{
+    background:#3949ab;
+}
+button:active{
+    transform:scale(0.97);
 }
 
-h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #ffd700;
+/* reset button */
+#resetBtn{
+    background:#d32f2f;
+}
+#resetBtn:hover{
+    background:#e53935;
 }
 
-/* ===== Inputs ===== */
-label {
-    display: block;
-    margin-top: 12px;
-    font-weight: 600;
-    color: #ffd700;
+/* split button */
+#splitBtn:disabled{
+    background:#aaa;
+    cursor:not-allowed;
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    border-radius: 10px;
-    border: 2px solid #ffd700;
-    background-color: #1c1f2a;
-    color: #fff;
-    font-weight: 500;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+/* loot table */
+#lootRows{
+    display:contents;
+}
+.loot-table{
+    display:grid;
+    grid-template-columns:3fr 1fr 1fr 1fr;
+    gap:8px;
+    align-items:center;
+    margin-top:10px;
+}
+.loot-header{
+    font-weight:700;
+    border-bottom:2px solid #ddd;
+    padding-bottom:6px;
+}
+.loot-row{
+    display:contents;
+}
+.loot-cell{
+    padding:6px 0;
+}
+.loot-cell button{
+    background:#f57c00;
+    width:100%;
+}
+.loot-cell button:hover{
+    background:#ef6c00;
 }
 
-input:focus {
-    outline: none;
-    border-color: #ff6f61;
-    box-shadow: 0 0 8px #ff6f61;
+/* total */
+.total-row{
+    margin-top:12px;
+    font-weight:bold;
+    font-size:18px;
 }
 
-/* ===== Buttons ===== */
-button {
-    margin-top: 15px;
-    padding: 12px 22px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.3s ease, background 0.3s ease;
+/* messages */
+#noLootMessage{
+    margin-top:10px;
+    color:#555;
+}
+#errorMessage{
+    margin-top:10px;
+    color:#d32f2f;
+    font-weight:600;
+}
+#serverMessage{
+    margin-top:10px;
+    color:#1a237e;
+    font-weight:600;
+}
+.hidden{
+    display:none;
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.6);
-}
-
-/* Primary Buttons */
-#addLootBtn, #splitBtn, #syncBtn, #loadBtn {
-    background: linear-gradient(135deg, #ff6f61, #ff3d00);
-    color: #fff;
-}
-
-#addLootBtn:hover, #splitBtn:hover, #syncBtn:hover, #loadBtn:hover {
-    background: linear-gradient(135deg, #ff8576, #ff5a36);
-}
-
-/* Reset Button */
-#resetBtn {
-    background: linear-gradient(135deg, #00b894, #009e6e);
-    color: #fff;
-}
-
-#resetBtn:hover {
-    background: linear-gradient(135deg, #33d9b2, #00c185);
-}
-
-/* Disabled Button */
-#splitBtn:disabled {
-    background: #555;
-    cursor: not-allowed;
-}
-
-/* ===== Loot Table ===== */
-.loot-table {
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
-    gap: 10px;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.loot-header {
-    font-weight: 700;
-    border-bottom: 2px solid #ffd700;
-    padding-bottom: 6px;
-    color: #ffd700;
-}
-
-.loot-row {
-    display: contents;
-}
-
-.loot-cell {
-    padding: 8px 0;
-}
-
-.loot-cell button {
-    background: linear-gradient(135deg, #f1c40f, #e67e22);
-    color: #000;
-}
-
-.loot-cell button:hover {
-    background: linear-gradient(135deg, #f4d03f, #eb984e);
-}
-
-/* ===== Totals ===== */
-.total-row {
-    margin-top: 15px;
-    font-weight: bold;
-    font-size: 18px;
-    color: #ffd700;
-}
-
-/* ===== Messages ===== */
-#errorMessage { color: #ff4d6d; }
-#serverMessage { color: #00ffff; font-weight: bold; }
-#noLootMessage { color: #bbb; }
-
-/* ===== Hidden ===== */
-.hidden { display: none; }
-
-/* ===== Responsive ===== */
+/* responsive */
 @media(min-width:768px){
-    main {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+    main{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:20px;
     }
     .panel:nth-child(5){
-        grid-column: 1 / span 2;
+        grid-column:1 / span 2;
     }
 }
