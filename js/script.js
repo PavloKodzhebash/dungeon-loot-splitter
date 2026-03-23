@@ -151,7 +151,7 @@ function resetAll(){
 // ----------------------
 
 const STUDENT_ID = "pavloH";
-const SERVER_URL = "https://goldtop.hopto.org"; // Используем HTTPS
+const SERVER_URL = "https://goldtop.hopto.org";
 
 function syncToServer(){
     serverMessage.innerText="";
