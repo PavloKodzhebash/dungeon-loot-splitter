@@ -11,19 +11,19 @@
 <body>
 
 <header>
-    <h1>Dungeon Loot Splitter</h1>
+  <h1>Dungeon Loot Splitter</h1>
 </header>
 
 <main>
 
-<section class="panel">
+  <section class="panel">
     <h2>Party Setup</h2>
     <label for="partySize">Party Size</label>
     <input type="number" id="partySize" min="1" step="1">
     <button id="resetBtn">Reset All</button>
-</section>
+  </section>
 
-<section class="panel">
+  <section class="panel">
     <h2>Add Loot</h2>
     <label for="lootName">Item Name</label>
     <input type="text" id="lootName">
@@ -33,46 +33,46 @@
     <input type="number" id="lootQuantity" min="1" step="1">
     <button id="addLootBtn">Add Loot</button>
     <div id="errorMessage"></div>
-</section>
+  </section>
 
-<section class="panel">
+  <section class="panel">
     <h2>Loot List</h2>
     <div id="noLootMessage">No loot added.</div>
     <div class="loot-table">
-        <div class="loot-header">Name</div>
-        <div class="loot-header">Value</div>
-        <div class="loot-header">Quantity</div>
-        <div class="loot-header">Remove</div>
-        <div id="lootRows"></div>
+      <div class="loot-header">Name</div>
+      <div class="loot-header">Value</div>
+      <div class="loot-header">Quantity</div>
+      <div class="loot-header">Remove</div>
+      <div id="lootRows"></div>
     </div>
     <div class="total-row">
-        Total Loot: $<span id="totalLoot">0.00</span>
+      Total Loot: $<span id="totalLoot">0.00</span>
     </div>
-</section>
+  </section>
 
-<section class="panel">
+  <section class="panel">
     <h2>Split Loot</h2>
     <button id="splitBtn">Split Loot</button>
     <p>Loot Per Member: $<span id="lootPerMember">0.00</span></p>
-</section>
+  </section>
 
-<section class="panel">
-    <h2>External Sync</h2>
+  <section class="panel">
+    <h2>Server Sync</h2>
     <button id="syncBtn">Sync to Server</button>
     <button id="loadBtn">Load from Server</button>
     <div id="serverMessage"></div>
-</section>
+  </section>
 
-<section class="panel">
+  <section class="panel">
     <h2>Reflection</h2>
     <p>
-        The loot array acts as the source of truth for the application. All loot items
-        are stored inside the array as objects containing name, value, and quantity.
-        Whenever the state changes, updateUI() recalculates totals and re-renders the
-        interface. This ensures the display always reflects the actual data stored
-        inside the program.
+      The loot array acts as the source of truth for the application. All loot items
+      are stored inside the array as objects containing name, value, and quantity.
+      Whenever the state changes, updateUI() recalculates totals and re-renders the
+      interface. This ensures the display always reflects the actual data stored
+      inside the program.
     </p>
-</section>
+  </section>
 
 </main>
 
