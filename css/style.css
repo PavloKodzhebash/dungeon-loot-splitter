@@ -1,10 +1,10 @@
 /* ===== Global Styles ===== */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-    color: #333;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
 }
 
 header {
@@ -13,30 +13,31 @@ header {
 }
 
 h1 {
-    font-size: 36px;
-    letter-spacing: 1px;
-    color: #1f2937;
+    font-size: 40px;
+    letter-spacing: 2px;
+    color: #ffdd59;
+    text-shadow: 1px 1px 6px #000;
 }
 
 /* ===== Panels ===== */
 .panel {
-    background: #fff;
+    background: linear-gradient(135deg, #2b2d42, #3f3f5c);
     padding: 25px;
     margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .panel:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.7);
 }
 
 h2 {
-    font-size: 22px;
+    font-size: 24px;
     margin-bottom: 15px;
-    color: #111827;
+    color: #ffd700;
 }
 
 /* ===== Inputs ===== */
@@ -44,71 +45,70 @@ label {
     display: block;
     margin-top: 12px;
     font-weight: 600;
-    color: #111827;
+    color: #ffd700;
 }
 
 input {
     width: 100%;
     padding: 12px;
     margin-top: 6px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: 2px solid #ffd700;
+    background-color: #1c1f2a;
+    color: #fff;
+    font-weight: 500;
     transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 input:focus {
     outline: none;
-    border: 1px solid #4CAF50;
-    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+    border-color: #ff6f61;
+    box-shadow: 0 0 8px #ff6f61;
 }
 
 /* ===== Buttons ===== */
 button {
     margin-top: 15px;
-    padding: 12px 20px;
+    padding: 12px 22px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.1s ease, background 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.1s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.6);
 }
 
 /* Primary Buttons */
 #addLootBtn, #splitBtn, #syncBtn, #loadBtn {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    background: linear-gradient(135deg, #ff6f61, #ff3d00);
     color: #fff;
 }
 
 #addLootBtn:hover, #splitBtn:hover, #syncBtn:hover, #loadBtn:hover {
-    background: linear-gradient(135deg, #66BB6A, #388E3C);
+    background: linear-gradient(135deg, #ff8576, #ff5a36);
 }
 
 /* Reset Button */
 #resetBtn {
-    background: linear-gradient(135deg, #EF5350, #C62828);
+    background: linear-gradient(135deg, #00b894, #009e6e);
     color: #fff;
 }
 
 #resetBtn:hover {
-    background: linear-gradient(135deg, #F0625D, #B71C1C);
+    background: linear-gradient(135deg, #33d9b2, #00c185);
 }
 
 /* Disabled Button */
 #splitBtn:disabled {
-    background: #ccc;
+    background: #555;
     cursor: not-allowed;
 }
 
 /* ===== Loot Table ===== */
-#lootRows {
-    display: contents;
-}
-
 .loot-table {
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;
@@ -119,9 +119,9 @@ button:hover {
 
 .loot-header {
     font-weight: 700;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid #ffd700;
     padding-bottom: 6px;
-    color: #111827;
+    color: #ffd700;
 }
 
 .loot-row {
@@ -133,14 +133,12 @@ button:hover {
 }
 
 .loot-cell button {
-    background: linear-gradient(135deg, #FF7043, #D84315);
-    width: 100%;
-    border-radius: 6px;
-    color: #fff;
+    background: linear-gradient(135deg, #f1c40f, #e67e22);
+    color: #000;
 }
 
 .loot-cell button:hover {
-    background: linear-gradient(135deg, #FF8A65, #BF360C);
+    background: linear-gradient(135deg, #f4d03f, #eb984e);
 }
 
 /* ===== Totals ===== */
@@ -148,26 +146,16 @@ button:hover {
     margin-top: 15px;
     font-weight: bold;
     font-size: 18px;
+    color: #ffd700;
 }
 
 /* ===== Messages ===== */
-#noLootMessage, #errorMessage, #serverMessage {
-    margin-top: 10px;
-    font-weight: 600;
-}
-
-#errorMessage {
-    color: #EF5350;
-}
-
-#serverMessage {
-    color: #1E3A8A;
-}
+#errorMessage { color: #ff4d6d; }
+#serverMessage { color: #00ffff; font-weight: bold; }
+#noLootMessage { color: #bbb; }
 
 /* ===== Hidden ===== */
-.hidden {
-    display: none;
-}
+.hidden { display: none; }
 
 /* ===== Responsive ===== */
 @media(min-width:768px){
